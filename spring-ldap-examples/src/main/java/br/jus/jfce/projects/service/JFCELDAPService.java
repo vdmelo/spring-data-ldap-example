@@ -43,9 +43,16 @@ public class JFCELDAPService {
      * 
      * @param username
      * @param password
+     * @throws Exception 
      */
-    public void login(String username, String password) {
-    	ldapTemplate.authenticate(query().where("sAMAccountName").is(username), password);
+    public LDAPUser login(String username, String password) throws Exception {
+    	CollectingAuthenticationErrorCallback errorCallback = new CollectingAuthenticationErrorCallback();
+		boolean result = ldapTemplate.authenticate("", "(sAMAccountName="+username+")", password, errorCallback);
+    	if (!result) {
+    	  throw errorCallback.getError();
+    	}
+    	
+    	return this.ldapRepository.findByUsername(username);
     }
 
     /**
@@ -55,7 +62,7 @@ public class JFCELDAPService {
      */
     public List<String> getAllPersonNames() {
         return ldapTemplate.search(
-                query().where("objectclass").is("person").and("sAMAccountName").is("vinicius.dantas"),
+                query().where("objectclass").is("person").and("sAMAccountName").is("username"),
                 new AttributesMapper<String>() {
                     public String mapFromAttributes(Attributes attrs)
                             throws NamingException {

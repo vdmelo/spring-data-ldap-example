@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.jfree.util.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,20 +34,29 @@ public class LdapExampleApplication {
 
         
         // OK
-        //log.info("Authenticate ... ");
-        //ldapService.login("vinicius.dantas", "xyz1234");
+        log.info("Tenta autenticar ... ");
+        try {
+        	LDAPUser user = ldapService.login("username", "123456");
+        	log.info("**** USUÁRIO AUTENTICADO COM SUCESSO ****");
+	        log.info("Login: " + user.getUsername());
+	        log.info("Nome: " + user.getNomeCompleto());
+	        log.info("E-mail: " + user.getEmail());
+        } catch(Exception ex) {
+        	log.warn("Login ou Senha inválidos");
+        	Log.error("Erro ao tentar autenticar usuário",ex);
+        }
         
         
         // NOK
-        LDAPUser user = ldapService.findByUsername("vinicius.dantas");
+        LDAPUser user = ldapService.findByUsername("username");
         
         if( user!=null ) {
-	        System.out.println("**** ENCONTROU O USUÁRIO ****");
-	        System.out.println("Login: " + user.getUsername());
-	        System.out.println("Nome: " + user.getNomeCompleto());
-	        System.out.println("E-mail: " + user.getEmail());
+	        log.info("**** ENCONTROU O USUÁRIO ****");
+	        log.info("Login: " + user.getUsername());
+	        log.info("Nome: " + user.getNomeCompleto());
+	        log.info("E-mail: " + user.getEmail());
         } else {
-        	System.out.println("**** NÃO ENCONTROU O USUÁRIO ****");        	
+        	log.info("**** NÃO ENCONTROU O USUÁRIO ****");        	
         }
 
         System.exit(-1);
