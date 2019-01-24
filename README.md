@@ -1,10 +1,12 @@
 # Example on how to use spring-data-ldap
 
 1. Configure LDAP Source;
-2. Create an embedded LDAP Base;*
-3. Autenticate a user using LdapTemplate;*
-4. Search on the LDAP base using LdapTemplate;*
-5. Search using Spring's LdapRepository;
+2. Create an repository with Spring's LdapRepository;
+3. Search using Spring's LdapRepository;
+4. Create an embedded LDAP Base;*
+5. Autenticate a user using LdapTemplate;*
+6. Search on the LDAP base using LdapTemplate;*
+
 
 
 
